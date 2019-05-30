@@ -11,15 +11,32 @@ import argparse
 
 CONFIG_FILE = 'tradfri_standalone_psk.conf'
 IPAdress = "192.168.2.102"
+SafetyKey = "hP5WF0MhBLugeUTf"
 
 async def run(Brightness, Color):
     # Assign configuration variables.
     # The configuration check takes care they are present.
     conf = load_json(CONFIG_FILE)
 
-    identity = conf[IPAdress].get('identity')
-    psk = conf[IPAdress].get('key')
-    api_factory = APIFactory(host=IPAdress, psk_id=identity, psk=psk)
+    try:
+        identity = conf[IPAdress].get('identity')
+        psk = conf[IPAdress].get('key')
+        api_factory = APIFactory(host=IPAdress, psk_id=identity, psk=psk)
+    except KeyError:
+        identity = uuid.uuid4().hex
+        api_factory = APIFactory(host=IPAdress, psk_id=identity)
+
+        try:
+            psk = await api_factory.generate_psk(SafetyKey)
+            print('Generated PSK: ', psk)
+
+            conf[IPAdress] = {'identity': identity,
+                               'key': psk}
+            save_json(CONFIG_FILE, conf)
+        except AttributeError:
+            raise PytradfriError("Please provide the 'Security Code' on the "
+                                 "back of your Tradfri gateway using the "
+                                 "-K flag.")
 
     api = api_factory.request
 
