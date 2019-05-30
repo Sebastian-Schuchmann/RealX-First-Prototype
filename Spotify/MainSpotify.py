@@ -1,5 +1,5 @@
 import Spotify as Spotify
 
 spotifyUser = Spotify.initialize()
-Spotify.playPlaylistByName(spotifyUser, "Break")
+Spotify.playPlaylistByName(spotifyUser, "Deep Work")
 
