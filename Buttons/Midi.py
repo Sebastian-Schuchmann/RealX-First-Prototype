@@ -2,7 +2,8 @@ import sys
 import rtmidi
 import threading
 from importlib.machinery import SourceFileLoader
-from subprocess import check_output
+import subprocess
+
 
 Spotify = SourceFileLoader("Spotify.py", "Spotify/Spotify.py").load_module()
 LightController = SourceFileLoader("LightController.py", "Lights/LightController.py").load_module()
@@ -14,17 +15,6 @@ midiin = rtmidi.RtMidiIn()
 spotifyUser = Spotify.initialize()
 pausentimer = 0
 
-def get_result(cmd, args):
-  out_put = check_output("%s %s" % (cmd, args), shell=True)
-  return out_put
-
-dir = "Directory: "
-files = get_result("ls", dir)
-for file in files.split(' '):
-  for f in file.split('\n'):
-    results = get_result("dunkel.scpt", f)
-    
-    print(results)
 
 # COLOR TEMPERATURES
 COLD = 0
@@ -39,18 +29,30 @@ def print_message(midi):
         print('Pause')
         Spotify.playPlaylistByName(spotifyUser, Spotify.BREAK)
         LightController.setLights(254,2)
+        subprocess.call(
+            ["/usr/bin/open", "-W", "-n", "-a", "DimmScreenToZero.app"]
+            )    
     elif midi.getMidiNoteName(midi.getNoteNumber()) == "C0":
         print('Deep Work')
         Spotify.playPlaylistByName(spotifyUser, Spotify.DEEPWORK)
         LightController.setLights(254,0)
+        subprocess.call(
+            ["/usr/bin/open", "-W", "-n", "-a", "LightScreenToFull.app"]
+            )   
     elif midi.getMidiNoteName(midi.getNoteNumber()) == "E-1":
         print('Casual Work')
         Spotify.playPlaylistByName(spotifyUser, Spotify.CASUALWORK)
         LightController.setLights(127,0)
+        subprocess.call(
+            ["/usr/bin/open", "-W", "-n", "-a", "LightScreenToFull.app"]
+            )   
     elif midi.getMidiNoteName(midi.getNoteNumber()) == "G#-2":
         print('Freizeit')
         Spotify.playPlaylistByName(spotifyUser, Spotify.FREIZEIT)
         LightController.setLights(254,1)
+        subprocess.call(
+            ["/usr/bin/open", "-W", "-n", "-a", "DimmScreenToZero.app"]
+            )    
     elif midi.getControllerNumber() == 7:
         spotifyUser.volume(midi.getControllerValue())
     elif midi.getControllerNumber() == 48:
