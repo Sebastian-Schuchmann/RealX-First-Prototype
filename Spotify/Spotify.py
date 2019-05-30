@@ -3,10 +3,14 @@ import spotipy
 import json
 import spotipy.util as util
 
+#DEFINE PLAYLISTS MANUALLY
+DEEPWORK = "Deep Work"
+CASUALWORK = "Casual Work"
+BREAK = "Break"
+FREIZEIT = "Freizeit"
 
 def playPlaylistByName(spotifyUser, name):
     playlists = spotifyUser.current_user_playlists(limit=50)
-    numberOfPlaylists = len(playlists["items"])
     foundPlaylist = False
     
     for i in playlists["items"]:
@@ -20,6 +24,9 @@ def playPlaylistByName(spotifyUser, name):
         spotifyUser.start_playback(device_id = None, context_uri=uri)
     else:
         print("Playlist not found")
+
+def pausePlayback(spotifyUser):
+    spotifyUser.pause_playback()
 
 def initialize():
     # Define what the application is allowed to do
