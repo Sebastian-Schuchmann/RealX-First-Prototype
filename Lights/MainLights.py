@@ -6,6 +6,10 @@ NORMAL = 1
 WARM = 2
 
 #BRIGTHNESS = 0 - 254
-LightController.setLights(254,0)
+while True:
+    x = input()
+    LightController.setLights(int(x),0)
+
+
 
 
