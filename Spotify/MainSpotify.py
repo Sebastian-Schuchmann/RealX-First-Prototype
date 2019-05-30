@@ -8,5 +8,5 @@ Spotify.playPlaylistByName(spotifyUser, Spotify.DEEPWORK)
 #Spotify.pausePlayback(spotifyUser)
 
 # CONTROL VOLUME 0 to 100
-spotifyUser.volume(100)
+spotifyUser.volume(30)
 
