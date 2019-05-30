@@ -2,6 +2,7 @@ import sys
 import rtmidi
 import threading
 from importlib.machinery import SourceFileLoader
+from subprocess import check_output
 
 Spotify = SourceFileLoader("Spotify.py", "Spotify/Spotify.py").load_module()
 Spotify.initialize()
@@ -9,6 +10,18 @@ Spotify.initialize()
 midiin = rtmidi.RtMidiIn()
 spotifyUser = Spotify.initialize()
 pausentimer = 0
+
+def get_result(cmd, args):
+  out_put = check_output("%s %s" % (cmd, args), shell=True)
+  return out_put
+
+dir = "Directory: "
+files = get_result("ls", dir)
+for file in files.split(' '):
+  for f in file.split('\n'):
+    results = get_result("dunkel.scpt", f)
+    
+    print(results)
 
 def print_message(midi):
     if midi.isNoteOn():
