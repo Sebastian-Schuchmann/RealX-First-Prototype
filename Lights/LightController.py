@@ -80,5 +80,6 @@ def setLights(Brightness, Temperature):
     if Temperature == 2:
         ColorTemp = 'efd275'
 
-    asyncio.get_event_loop().run_until_complete(run(Brightness, ColorTemp))
+    loop = asyncio.new_event_loop().run_until_complete(run(Brightness, ColorTemp))
+    asyncio.set_event_loop(loop)
 
