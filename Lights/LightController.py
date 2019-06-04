@@ -10,7 +10,7 @@ import uuid
 import argparse
 
 CONFIG_FILE = 'tradfri_standalone_psk.conf'
-IPAdress = "192.168.2.102"
+IPAdress = "192.168.2.100"
 SafetyKey = "hP5WF0MhBLugeUTf"
 
 async def run(Brightness, Color):
